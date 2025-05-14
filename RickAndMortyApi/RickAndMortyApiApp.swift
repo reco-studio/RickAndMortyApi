@@ -1,9 +1,3 @@
-//
-//  RickAndMortyApiApp.swift
-//  RickAndMortyApi
-//
-//  Created by Maciej Szostak on 12/05/2025.
-//
 
 import SwiftUI
 
@@ -11,7 +5,7 @@ import SwiftUI
 struct RickAndMortyApiApp: App {
     var body: some Scene {
         WindowGroup {
-            ContentView()
+            CharactersListView()
         }
     }
 }
