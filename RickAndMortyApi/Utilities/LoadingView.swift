@@ -11,7 +11,7 @@ struct LoadingView: View {
                 .font(.caption)
                 .foregroundColor(.secondary)
         }
-        .frame(maxWidth: .infinity, maxHeight: . infinity)
+        .frame(maxWidth: .infinity, maxHeight: .infinity)
     }
 }
 

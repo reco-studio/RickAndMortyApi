@@ -1,18 +1,22 @@
-//
-//  CharactersListViewModel.swift
-//  RickAndMortyApi
-//
-//  Created by Maciej Szostak on 15/05/2025.
-//
 
 import SwiftUI
 
-struct CharactersListViewModel: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
+@MainActor
+class CharactersListViewModel: ObservableObject {
+    @Published var state: LoadState<[Character]> = .idle
+    private let service = APIService()
 
-#Preview {
-    CharactersListViewModel()
+    func loadCharacters() async {
+        state = .loading
+        do {
+            let list = try await service.fetchCharacters()
+            state = list.isEmpty ? .failure("No characters") : .success(list)
+        } catch {
+            state = .failure(error.localizedDescription)
+        }
+    }
+
+    func reset() {
+        state = .idle
+    }
 }

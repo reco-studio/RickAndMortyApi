@@ -1,8 +1,8 @@
 
 import Foundation
 
-struct CharactersResponse: Codable {
-    struct Info: Codable {
+struct CharactersResponse: Codable, Equatable {
+    struct Info: Codable, Equatable {
         let count: Int
         let pages: Int
         let next: String?

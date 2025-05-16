@@ -1,18 +1,23 @@
-//
-//  EpisodeDetailsViewModel.swift
-//  RickAndMortyApi
-//
-//  Created by Maciej Szostak on 15/05/2025.
-//
 
 import SwiftUI
 
-struct EpisodeDetailsViewModel: View {
-    var body: some View {
-        Text(/*@START_MENU_TOKEN@*/"Hello, World!"/*@END_MENU_TOKEN@*/)
-    }
-}
+@MainActor
+class EpisodeDetailsViewModel: ObservableObject {
+    @Published var state: LoadState<Episode> = .idle
+    private let service = APIService()
+    private let episodeID: Int
 
-#Preview {
-    EpisodeDetailsViewModel()
+    init(episodeID: Int) {
+        self.episodeID = episodeID
+    }
+
+    func load() async {
+        state = .loading
+        do {
+            let ep = try await service.fetchEpisode(id: episodeID)
+            state = .success(ep)
+        } catch {
+            state = .failure(error.localizedDescription)
+        }
+    }
 }
