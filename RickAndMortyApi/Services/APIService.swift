@@ -35,3 +35,5 @@ final class APIService {
         return try await request(url)
     }
 }
+
+extension APIService: APIServiceProtocol {}
