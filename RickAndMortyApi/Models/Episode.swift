@@ -1,4 +1,3 @@
-
 import Foundation
 
 struct Episode: Codable, Identifiable, Equatable {
@@ -18,3 +17,7 @@ extension Episode {
         characters: []
     )
 }
+
+// Ogólny komentarz
+
+/// Przydałoby się skorzystać z `CodingKeys` również tutaj, tak aby wszystkie nazwy mieć w postaci `snakeCase`. `air_date -> airDate`.

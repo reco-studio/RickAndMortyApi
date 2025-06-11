@@ -1,40 +1,44 @@
-
 import SwiftUI
 
 struct EpisodeDetailsView: View {
-    @StateObject private var vm: EpisodeDetailsViewModel
+    @StateObject private var viewModel: EpisodeDetailsViewModel
 
     init(episodeID: Int) {
-        _vm = StateObject(wrappedValue: EpisodeDetailsViewModel(episodeID: episodeID))
+        _viewModel = StateObject(wrappedValue: EpisodeDetailsViewModel(episodeID: episodeID))
     }
 
     var body: some View {
         Group {
-            switch vm.state {
+            switch viewModel.state {
             case .idle, .loading:
                 LoadingView("Loading episode")
-            case .failure(let msg):
-                ErrorView(message: msg) {
-                    Task { await vm.load() }
+            case let .failure(message):
+                ErrorView(message: message) {
+                    Task { await viewModel.load() }
                 }
-            case .success(let ep):
+            case let .success(episode):
                 VStack(alignment: .leading, spacing: 8) {
-                    Text(ep.name)
+                    Text(episode.name)
                         .font(.title2)
-                    Text("Air date: \(ep.air_date)")
-                    Text("Episode: \(ep.episode)")
-                    Text("Characters: \(ep.characters.count)")
-                    Spacer()
+                    Text("Air date: \(episode.air_date)")
+                    Text("Episode: \(episode.episode)")
+                    Text("Characters: \(episode.characters.count)")
                 }
                 .padding()
+                .frame(maxHeight: .infinity, alignment: .top)
             }
         }
         .navigationTitle("Episode")
-        .task { await vm.load() }
+        .task { await viewModel.load() }
     }
 }
 
+#if DEBUG
 #Preview {
     EpisodeDetailsView(episodeID: 1)
 }
+#endif
 
+// Ogólny komentarz
+
+/// Fajnie że na `init` przekazujesz `episodeID` na podstawie którego budujesz ViewModel, można pójść o krok dalej i podczas inicjalizacji podawać jako parametr, cały ViewModel.

@@ -1,48 +1,55 @@
-
 import SwiftUI
 
 struct CharacterDetailsView: View {
     let character: Character
-    @StateObject private var vm = CharacterDetailsViewModel()
+    @StateObject private var viewModel = CharacterDetailsViewModel()
 
     var body: some View {
         ScrollView {
             VStack(spacing: 12) {
-                AsyncImage(url: character.image) { img in img.resizable()
-                    .scaledToFit() }
+                AsyncImage(url: character.image) { image in
+                    image
+                        .resizable()
+                        .scaledToFit()
+                }
                 placeholder: {
                     ProgressView()
                 }
-                Text(" Status: \(character.status)")
-                Text(" Gender: \(character.gender)")
-                Text(" Origin: \(character.origin.name)")
-                Text(" Location: \(character.location.name)")
+                Text("Status: \(character.status)")
+                Text("Gender: \(character.gender)")
+                Text("Origin: \(character.origin.name)")
+                Text("Location: \(character.location.name)")
 
                 Divider()
 
-                switch vm.episodes {
-                case .idle:
+                switch viewModel.episodes {
+                case .idle, .loading:
                     LoadingView("Loading episodes")
-                case .loading:
-                    LoadingView("Loading episodes")
-                case .success(let eps):
-                    ForEach(eps) { ep in
-                        NavigationLink(destination: EpisodeDetailsView(episodeID: ep.id)) {
-                            Text("Episode \(ep.episode)")
+                case let .success(episodes):
+                    ForEach(episodes) { episode in
+                        NavigationLink(destination: EpisodeDetailsView(episodeID: episode.id)) {
+                            Text("Episode \(episode.episode)")
                         }
                     }
-                case .failure(let msg):
-                    ErrorView(message: msg) { Task { await vm.load(character: character) } }
+                case let .failure(message):
+                    ErrorView(message: message) {
+                        Task { await viewModel.load(character: character) }
+                    }
                 }
             }
             .padding()
         }
         .navigationTitle(character.name)
-        .task { await vm.load(character: character) }
+        .task { await viewModel.load(character: character) }
     }
 }
 
+#if DEBUG
 #Preview {
     CharacterDetailsView(character: .mock)
 }
+#endif
 
+// Ogólny komentarz
+
+/// Widok nie powinien trzymać żadnych modelów danych, `character` powinien wylądować w ViewModelu.

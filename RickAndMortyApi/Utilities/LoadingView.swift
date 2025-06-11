@@ -1,9 +1,12 @@
-
 import SwiftUI
 
 struct LoadingView: View {
     let text: String
-    init(_ text: String = " Loading... ") { self.text = text }
+
+    init(_ text: String = " Loading... ") {
+        self.text = text
+    }
+
     var body: some View {
         VStack(spacing: 8) {
             ProgressView()
@@ -15,6 +18,12 @@ struct LoadingView: View {
     }
 }
 
+#if DEBUG
 #Preview {
     LoadingView()
 }
+#endif
+
+// Ogólny komentarz
+
+/// Brak uwag.

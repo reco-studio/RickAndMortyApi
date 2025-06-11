@@ -1,4 +1,3 @@
-
 import Foundation
 
 struct Character: Codable, Identifiable, Equatable {
@@ -60,3 +59,7 @@ extension Location {
         url != nil
     }
 }
+
+// Ogólny komentarz
+
+/// Plus za wykorzystanie `CodingKeys`.

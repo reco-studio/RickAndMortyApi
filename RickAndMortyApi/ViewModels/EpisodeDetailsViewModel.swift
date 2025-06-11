@@ -1,4 +1,3 @@
-
 import SwiftUI
 
 @MainActor
@@ -14,10 +13,14 @@ class EpisodeDetailsViewModel: ObservableObject {
     func load() async {
         state = .loading
         do {
-            let ep = try await service.fetchEpisode(id: episodeID)
-            state = .success(ep)
+            let episode = try await service.fetchEpisode(id: episodeID)
+            state = .success(episode)
         } catch {
             state = .failure(error.localizedDescription)
         }
     }
 }
+
+// Ogólny komentarz
+
+/// Brak uwag.
