@@ -1,4 +1,3 @@
-
 import Foundation
 
 enum LoadState<Success> {
@@ -7,3 +6,7 @@ enum LoadState<Success> {
     case success(Success)
     case failure(String)
 }
+
+// Ogólny komentarz
+
+/// Brak uwag.

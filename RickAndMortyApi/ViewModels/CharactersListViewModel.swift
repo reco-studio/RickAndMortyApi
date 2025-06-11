@@ -1,4 +1,3 @@
-
 import SwiftUI
 
 @MainActor
@@ -9,8 +8,8 @@ class CharactersListViewModel: ObservableObject {
     func loadCharacters() async {
         state = .loading
         do {
-            let list = try await service.fetchCharacters()
-            state = list.isEmpty ? .failure("No characters") : .success(list)
+            let characters = try await service.fetchCharacters()
+            state = characters.isEmpty ? .failure("No characters") : .success(characters)
         } catch {
             state = .failure(error.localizedDescription)
         }
@@ -20,3 +19,7 @@ class CharactersListViewModel: ObservableObject {
         state = .idle
     }
 }
+
+// Ogólny komentarz
+
+/// Brak uwag.

@@ -1,4 +1,3 @@
-
 import Foundation
 
 final class APIService {
@@ -12,10 +11,12 @@ final class APIService {
         do {
             return try JSONDecoder().decode(T.self, from: data)
         } catch {
+            #if DEBUG
             print("❌ Decoding error for \(T.self): \(error)")
             if let raw = String(data: data, encoding: .utf8) {
                 print("🔍 Raw JSON:\n\(raw)")
             }
+            #endif
             throw error
         }
     }
@@ -35,3 +36,7 @@ final class APIService {
         return try await request(url)
     }
 }
+
+// Ogólny komentarz
+
+/// Plus za printowanie błędów, zawsze to ułatwia poszukiwania co poszło nie tak. Co do metody od pobierania `Characters` numer strony w `URL` to nic innego jak `URLQueryItem` i przy użyciu niego powinieneś dokleić `page` do `URLa`.
